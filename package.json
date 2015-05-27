@@ -1,0 +1,28 @@
+{
+  "name": "dragondrop",
+  "version": "0.0.0",
+  "description": "Here be dragons! (Drop them?)",
+  "main": "dragondrop.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wetfish/dragondrop.git"
+  },
+  "keywords": [
+    "wetfish",
+    "dragons",
+    "drag",
+    "drop"
+  ],
+  "author": "Rachel Fish <rachel@wetfish.net> (https://wetfish.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wetfish/dragondrop/issues"
+  },
+  "homepage": "https://github.com/wetfish/dragondrop#readme",
+  "dependencies": {
+    "wetfish-basic": "^0.3.1"
+  }
+}
