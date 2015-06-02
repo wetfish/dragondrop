@@ -5,7 +5,21 @@
         this.element = element;
         this.active = false;
 
+        this.init();
         this.bind();
+    }
+
+    // Initialize element before being dragged
+    Dragon.prototype.init = function()
+    {
+        $(this.element).style({position: 'absolute'});
+
+        // Save the current element position
+        this.pos =
+        {
+            x: parseInt($(this.element).style('top')),
+            y: parseInt($(this.element).style('left'))
+        };
     }
 
     // Bind mouse events
@@ -21,7 +35,7 @@
             $(drag.element).addClass('active');
             drag.active = true;
 
-            // Save current position
+            // Save current mouse position
             drag.lastX = event.clientX;
             drag.lastY = event.clientY;
         });
@@ -33,6 +47,22 @@
                 event.preventDefault();
 
                 // Find distance we've moved
+                var delta =
+                {
+                    x: event.clientX - drag.lastX,
+                    y: event.clientY - drag.lastY
+                };
+
+                // Update the saved element position
+                drag.pos.x += delta.x;
+                drag.pos.y += delta.y;
+
+                // Move the element on the page
+                $(drag.element).style({transform: 'translate('+drag.pos.x+'px, '+drag.pos.y+'px)'});
+
+                // Save current mouse position
+                drag.lastX = event.clientX;
+                drag.lastY = event.clientY;
             }
         });
 
