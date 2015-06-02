@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DragonDrop - Here be dragons!</title>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="scrollie.css" type="text/css">
+
+        <style>
+            .content {
+                width: 810px;
+                height: 300px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-top: -150px;
+                margin-left: -400px;
+                text-align: center;
+            }
+
+            .example {
+                max-height: 100%;
+            }
+
+            .active {
+                border: 1px solid yellow;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <img class="example" src="trogdor.png">
+        </div>
+        
+        <script src="node_modules/wetfish-basic/dist/basic.js"></script>
+        <script src="dragondrop.js"></script>
+
+        <script>
+            $(document).ready(function(event)
+            {
+                $('.example').dragondrop();
+            });
+        </script>
+    </body>
+</html>
