@@ -15,10 +15,11 @@
         $(this.element).style({position: 'absolute'});
 
         // Save the current element position
+        var bounds = this.element.getBoundingClientRect();
         this.pos =
         {
-            x: parseInt($(this.element).style('top')),
-            y: parseInt($(this.element).style('left'))
+            x: bounds.top,
+            y: bounds.left
         };
     }
 
