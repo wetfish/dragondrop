@@ -1,8 +1,9 @@
 (function($)
 {
-    var Dragon = function(element)
+    var Dragon = function(element, options)
     {
         this.element = element;
+        this.options = options;
         this.active = false;
 
         this.init();
@@ -75,11 +76,16 @@
     }
 
     // Wetfish basic wrapper
-    $.prototype.dragondrop = function()
+    $.prototype.dragondrop = function(options)
     {
+        if(typeof options != "object")
+        {
+            options = {};
+        }
+        
         this.forEach(this.elements, function(index, element)
         {
-            new Dragon(element);
+            new Dragon(element, options);
         });
     }
 }(basic));
