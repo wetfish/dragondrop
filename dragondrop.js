@@ -33,7 +33,7 @@
         {
             event.preventDefault();
             
-            $(drag.element).addClass('active');
+            $(drag.element).addClass('dragging');
             drag.active = true;
 
             // Save current mouse position
@@ -69,7 +69,7 @@
 
         $('html').on('mouseup', function()
         {
-            $(drag.element).removeClass('active');
+            $(drag.element).removeClass('dragging');
             drag.active = false;
         });
     }
