@@ -33,13 +33,15 @@
         $(drag.element).on('mousedown', function(event)
         {
             event.preventDefault();
-            
+
             $(drag.element).addClass('dragging');
             drag.active = true;
 
             // Save current mouse position
             drag.lastX = event.clientX;
             drag.lastY = event.clientY;
+
+            $(drag.element).trigger('dragstart');
         });
 
         $('html').on('mousemove', function(event)
@@ -65,6 +67,8 @@
                 // Save current mouse position
                 drag.lastX = event.clientX;
                 drag.lastY = event.clientY;
+
+                $(drag.element).trigger('dragmove');
             }
         });
 
@@ -72,6 +76,8 @@
         {
             $(drag.element).removeClass('dragging');
             drag.active = false;
+
+            $(drag.element).trigger('dragend');
         });
     }
 

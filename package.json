@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/wetfish/dragondrop#readme",
   "dependencies": {
-    "wetfish-basic": "^0.5.1"
+    "wetfish-basic": "^0.6.0"
   }
 }
