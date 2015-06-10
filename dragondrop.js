@@ -19,9 +19,15 @@
         var bounds = this.element.getBoundingClientRect();
         this.pos =
         {
-            x: bounds.top,
-            y: bounds.left
+            x: bounds.left,
+            y: bounds.top
         };
+
+        // Remove the element's original position
+        $(this.element).style({top: 0, left: 0});
+
+        // Reposition the element using translate
+        $(this.element).style({transform: 'translate('+this.pos.x+'px, '+this.pos.y+'px)'});
     }
 
     // Bind mouse events
