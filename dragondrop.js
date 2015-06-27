@@ -27,7 +27,7 @@
         $(this.element).style({top: 0, left: 0});
 
         // Reposition the element using translate
-        $(this.element).style({transform: 'translate('+this.pos.x+'px, '+this.pos.y+'px)'});
+        $(this.element).transform('translate', this.pos.x+'px', this.pos.y+'px');
     }
 
     // Bind mouse events
@@ -68,7 +68,7 @@
                 drag.pos.y += delta.y;
 
                 // Move the element on the page
-                $(drag.element).style({transform: 'translate('+drag.pos.x+'px, '+drag.pos.y+'px)'});
+                $(drag.element).transform('translate', drag.pos.x+'px', drag.pos.y+'px');
 
                 // Save current mouse position
                 drag.lastX = event.clientX;
