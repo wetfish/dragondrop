@@ -94,9 +94,16 @@
                 };
 
                 // Update the saved element position
-                drag.pos.x += delta.x;
-                drag.pos.y += delta.y;
+                if(drag.options.axis == 'x' || drag.options.axis === undefined)
+                {
+                    drag.pos.x += delta.x;
+                }
 
+                if(drag.options.axis == 'y' || drag.options.axis === undefined)
+                {
+                    drag.pos.y += delta.y;
+                }
+                
                 // If we're doing percent based positioning
                 if(drag.options.position == '%')
                 {
