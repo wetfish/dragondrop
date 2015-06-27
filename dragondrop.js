@@ -93,6 +93,19 @@
                     y: position.y - drag.lastY
                 };
 
+                if(drag.options.grid)
+                {
+                    // Only update the position if we've moved more than the grid
+                    if(Math.abs(delta.x) < drag.options.grid && Math.abs(delta.y) < drag.options.grid)
+                    {
+                        return;
+                    }
+
+                    // If we've moved more than the grid, make sure we move along it
+                    delta.x -= (delta.x % drag.options.grid);
+                    delta.y -= (delta.y % drag.options.grid);
+                }
+
                 // Update the saved element position
                 if(drag.options.axis == 'x' || drag.options.axis === undefined)
                 {

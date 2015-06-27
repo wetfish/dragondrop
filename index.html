@@ -9,7 +9,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <style>
+            body {
+                background-image: url(grid-100.png);
+            }
+            
             .example {
+                position: absolute;
+                top: 100px;
+                left:100px;
                 max-height: 50%;
             }
 
@@ -27,7 +34,7 @@
         <script>
             $(document).ready(function(event)
             {
-                $('.example').dragondrop({position: '%'});
+                $('.example').dragondrop({position: '%', grid: 100});
             });
         </script>
     </body>
