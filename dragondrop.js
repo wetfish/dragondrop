@@ -30,37 +30,67 @@
         $(this.element).transform('translate', this.pos.x+'px', this.pos.y+'px');
     }
 
+    // Helper function to get event position
+    Dragon.prototype.position = function(event)
+    {
+        var output = {};
+
+        // If this is a touch event
+        if(event.type.indexOf('touch') > -1)
+        {
+            var touch = event.touches[0] || event.changedTouches[0];
+
+            output.x = touch.clientX;
+            output.y = touch.clientY;
+        }
+        
+        // Mouse events are a bit simpler
+        else
+        {
+            output.x = event.clientX;
+            output.y = event.clientY;
+        }
+
+        return output;
+    }
+
     // Bind mouse events
     Dragon.prototype.bind = function()
     {
         // Preserve scope inside event handlers
         var drag = this;
 
-        $(drag.element).on('mousedown', function(event)
+        $(drag.element).on('mousedown touchstart', function(event)
         {
             event.preventDefault();
 
             $(drag.element).addClass('dragging');
             drag.active = true;
 
-            // Save current mouse position
-            drag.lastX = event.clientX;
-            drag.lastY = event.clientY;
+            // Find the current position
+            var position = drag.position(event);
 
+            // Save it
+            drag.lastX = position.x;
+            drag.lastY = position.y;
+            
             $(drag.element).trigger('dragstart');
         });
 
-        $('html').on('mousemove', function(event)
+        $('html').on('mousemove touchmove', function(event)
         {
             if(drag.active)
             {
                 event.preventDefault();
 
+                // Find the current position
+                var position = drag.position(event);
+
                 // Find distance we've moved
                 var delta =
                 {
-                    x: event.clientX - drag.lastX,
-                    y: event.clientY - drag.lastY
+                    x: position.x - drag.lastX,
+                    y: position.y - drag.lastY
                 };
 
                 // Update the saved element position
@@ -71,14 +101,14 @@
                 $(drag.element).transform('translate', drag.pos.x+'px', drag.pos.y+'px');
 
                 // Save current mouse position
-                drag.lastX = event.clientX;
-                drag.lastY = event.clientY;
+                drag.lastX = position.x;
+                drag.lastY = position.y;
 
                 $(drag.element).trigger('dragmove');
             }
         });
 
-        $('html').on('mouseup', function()
+        $('html').on('mouseup touchend touchcancel', function()
         {
             $(drag.element).removeClass('dragging');
             drag.active = false;
