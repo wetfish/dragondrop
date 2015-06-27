@@ -97,10 +97,36 @@
                 drag.pos.x += delta.x;
                 drag.pos.y += delta.y;
 
-                // Move the element on the page
-                $(drag.element).transform('translate', drag.pos.x+'px', drag.pos.y+'px');
+                // If we're doing percent based positioning
+                if(drag.options.position == '%')
+                {
+                    // This is probably inaccurate in a bunch of cases?
+                    var parent = $(window).size();
+                    var child = $(drag.element).size();
 
-                // Save current mouse position
+                    // Because CSS translations in percent are based on the element's size...
+                    // We have to multiply the distance we move by the ratio of the size of the parent to the child
+                    var ratio =
+                    {
+                        x: parent.width.inner / child.width.outer,
+                        y: parent.height.inner / child.height.outer
+                    }
+
+                    var percent =
+                    {
+                        x: (drag.pos.x / parent.width.inner) * 100 * ratio.x,
+                        y: (drag.pos.y / parent.height.inner) * 100 * ratio.y
+                    }
+
+                    $(drag.element).transform('translate', percent.x+'%', percent.y+'%');
+                }
+                // Otherwise, default to pixel based positioning
+                else
+                {
+                    $(drag.element).transform('translate', drag.pos.x+'px', drag.pos.y+'px');
+                }
+
+                // Save the current position
                 drag.lastX = position.x;
                 drag.lastY = position.y;
 
