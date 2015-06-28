@@ -12,7 +12,7 @@
             .container {
                 box-sizing: border-box;
                 background-color: #ccc;
-                height: 330px;
+                height: 435px;
                 width: 120px;
                 padding: 5px;
             }
@@ -37,27 +37,52 @@
                 max-width: 100%;
                 z-index: 1;
             }
+
+            body .example {
+                max-height: 50%;
+            }
             
             .dragging {
+                z-index: 3 !important;
                 border: 1px solid yellow;
+                pointer-events: none;
+            }
+
+            .credits {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                font-size: 75%;
+                color: #999;
+            }
+
+            .credits a {
+                color: #555;
             }
         </style>
     </head>
-    <body>
+    <body class="droppable">
         <div class="container">
-            <div class="slot">
+            <div class="slot droppable">
                 <img class="example" src="dragons/trogdor.png">
             </div>
 
-            <div class="slot">
+            <div class="slot droppable">
                 <img class="example" src="dragons/dragonite.png">
             </div>
 
-            <div class="slot">
+            <div class="slot droppable">
                 <img class="example" src="dragons/spike.png">
+            </div>
+
+            <div class="slot droppable">
+                <img class="example" src="dragons/charmander.png">
             </div>
         </div>
 
+        <div class="credits">
+            DragonDrop is a <a href="LICENSE">MIT licensed</a> library © Wetfish 2015 - All example characters owned by their respective <a href="dragons/COPYRIGHT">copyright holders</a>.
+        </div>
 
         <script src="node_modules/wetfish-basic/dist/basic.js"></script>
         <script src="dragondrop.js"></script>
@@ -66,6 +91,16 @@
             $(document).ready(function(event)
             {
                 $('.example').dragondrop();
+
+                // Change z-index when dropping
+                $('.example').on('dragend', function()
+                {
+                    // Set all other dragons to 1
+                    $('.dragon').style({'z-index': 1});
+
+                    // Set this dragon to 2
+                    $(this).style({'z-index': 2});
+                });
             });
         </script>
     </body>

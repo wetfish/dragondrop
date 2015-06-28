@@ -13,6 +13,7 @@
     // Initialize element before being dragged
     Dragon.prototype.init = function()
     {
+        $(this.element).addClass('dragon');
         $(this.element).style({position: 'absolute'});
 
         // Save the current element position
@@ -62,6 +63,9 @@
         $(drag.element).on('mousedown touchstart', function(event)
         {
             event.preventDefault();
+
+            // Prevent dropping onto other dragons
+            $('.dragon').style({'pointer-events': 'none'});
 
             $(drag.element).addClass('dragging');
             drag.active = true;
@@ -153,12 +157,42 @@
             }
         });
 
-        $('html').on('mouseup touchend touchcancel', function()
+        $('html').on('mouseup touchend touchcancel', function(event)
         {
-            $(drag.element).removeClass('dragging');
-            drag.active = false;
+            if(drag.active)
+            {
+                // If we dropped into a droppable element
+                if($(event.target).hasClass('droppable'))
+                {
+                    // And the target is somewhere new
+                    if(drag.element.parentNode != event.target)
+                    {
+                        var newSize = $(event.target).size();
+                        var oldSize = $(drag.element.parentNode).size();
 
-            $(drag.element).trigger('dragend');
+                        // If the new location is smaller than the previous
+                        if(newSize.width.inner <= oldSize.width.inner && newSize.height.inner <= oldSize.height.inner)
+                        {
+                            // Reset its position
+                            drag.pos.x = 0;
+                            drag.pos.y = 0;
+
+                            $(drag.element).transform('translate', drag.pos.x+'px', drag.pos.y+'px');
+                        }
+
+                        // Move the dragon into the droppable target
+                        event.target.appendChild(drag.element); 
+                    }
+                }
+
+                $(drag.element).removeClass('dragging');
+                drag.active = false;
+
+                $(drag.element).trigger('dragend');
+
+                // Re-enable pointer-events
+                $('.dragon').style({'pointer-events': 'auto'});
+            }
         });
     }
 
