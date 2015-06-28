@@ -161,13 +161,25 @@
         {
             if(drag.active)
             {
+                // Touch events always return the original target, so we have to calculate where you moved to
+                if(event.type.indexOf('touch') > -1)
+                {
+                    // Find the current position
+                    var position = drag.position(event);
+                    var target = document.elementFromPoint(position.x, position.y);
+                }
+                else
+                {
+                    var target = event.target;
+                }
+                
                 // If we dropped into a droppable element
-                if($(event.target).hasClass('droppable'))
+                if($(target).hasClass('droppable'))
                 {
                     // And the target is somewhere new
-                    if(drag.element.parentNode != event.target)
+                    if(drag.element.parentNode != target)
                     {
-                        var newSize = $(event.target).size();
+                        var newSize = $(target).size();
                         var oldSize = $(drag.element.parentNode).size();
 
                         // If the new location is smaller than the previous
@@ -181,7 +193,7 @@
                         }
 
                         // Move the dragon into the droppable target
-                        event.target.appendChild(drag.element); 
+                        target.appendChild(drag.element); 
                     }
                 }
 

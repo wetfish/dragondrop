@@ -9,6 +9,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <style>
+            .background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+            
             .container {
                 box-sizing: border-box;
                 background-color: #ccc;
@@ -61,29 +69,31 @@
             }
         </style>
     </head>
-    <body class="droppable">
-        <div class="container">
-            <div class="slot droppable">
-                <img class="example" src="dragons/trogdor.png">
+    <body>
+        <div class="droppable background">
+            <div class="container">
+                <div class="droppable slot">
+                    <img class="example" src="dragons/trogdor.png">
+                </div>
+
+                <div class="droppable slot">
+                    <img class="example" src="dragons/dragonite.png">
+                </div>
+
+                <div class="droppable slot">
+                    <img class="example" src="dragons/spike.png">
+                </div>
+
+                <div class="droppable slot">
+                    <img class="example" src="dragons/charmander.png">
+                </div>
             </div>
 
-            <div class="slot droppable">
-                <img class="example" src="dragons/dragonite.png">
-            </div>
-
-            <div class="slot droppable">
-                <img class="example" src="dragons/spike.png">
-            </div>
-
-            <div class="slot droppable">
-                <img class="example" src="dragons/charmander.png">
+            <div class="credits">
+                DragonDrop is a <a href="LICENSE.txt">MIT licensed</a> library © Wetfish 2015 - All example characters owned by their respective <a href="dragons/COPYRIGHT.txt">copyright holders</a>.
             </div>
         </div>
-
-        <div class="credits">
-            DragonDrop is a <a href="LICENSE">MIT licensed</a> library © Wetfish 2015 - All example characters owned by their respective <a href="dragons/COPYRIGHT">copyright holders</a>.
-        </div>
-
+        
         <script src="node_modules/wetfish-basic/dist/basic.js"></script>
         <script src="dragondrop.js"></script>
 
