@@ -9,32 +9,63 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <style>
-            body {
-                background-image: url(grid-100.png);
-            }
-            
-            .example {
-                position: absolute;
-                top: 100px;
-                left:100px;
-                max-height: 50%;
+            .container {
+                box-sizing: border-box;
+                background-color: #ccc;
+                height: 330px;
+                width: 120px;
+                padding: 5px;
             }
 
+            .slot {
+                box-sizing: border-box;
+                height: 100px;
+                width: 100px;
+                border: 1px solid #777;
+                background-color: #eee;
+                margin: 5px;
+                position: relative;
+            }
+
+            .slot:hover {
+                background-color: #ccf;
+            }
+
+            .slot .example {
+                position: absolute;
+                max-height: 100%;
+                max-width: 100%;
+                z-index: 1;
+            }
+            
             .dragging {
                 border: 1px solid yellow;
             }
         </style>
     </head>
     <body>
-        <img class="example" src="trogdor.png">
-        
+        <div class="container">
+            <div class="slot">
+                <img class="example" src="dragons/trogdor.png">
+            </div>
+
+            <div class="slot">
+                <img class="example" src="dragons/dragonite.png">
+            </div>
+
+            <div class="slot">
+                <img class="example" src="dragons/spike.png">
+            </div>
+        </div>
+
+
         <script src="node_modules/wetfish-basic/dist/basic.js"></script>
         <script src="dragondrop.js"></script>
 
         <script>
             $(document).ready(function(event)
             {
-                $('.example').dragondrop({position: '%', grid: 100});
+                $('.example').dragondrop();
             });
         </script>
     </body>

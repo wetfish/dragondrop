@@ -16,11 +16,10 @@
         $(this.element).style({position: 'absolute'});
 
         // Save the current element position
-        var bounds = this.element.getBoundingClientRect();
         this.pos =
         {
-            x: bounds.left,
-            y: bounds.top
+            x: this.element.offsetLeft,
+            y: this.element.offsetTop
         };
 
         // Remove the element's original position
