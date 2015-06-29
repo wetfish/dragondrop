@@ -111,6 +111,16 @@
                     // Set this dragon to 2
                     $(this).style({'z-index': 2});
                 });
+
+                // Reposition dragon on drop
+                $('.example').on('drop', function()
+                {
+                    // Make sure the dragon position is reset is centered when we drop it into a slot
+                    if($(this.parentNode).hasClass('slot'))
+                    {
+                        $(this).trigger('dragreset');
+                    }
+                });
             });
         </script>
     </body>

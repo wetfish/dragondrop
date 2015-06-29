@@ -26,8 +26,8 @@
         // Remove the element's original position
         $(this.element).style({top: 0, left: 0});
 
-        // Reposition the element using translate
-        $(this.element).transform('translate', this.pos.x+'px', this.pos.y+'px');
+        // Update the element's position
+        this.update();
     }
 
     // Helper function to get event position
@@ -54,6 +54,39 @@
         return output;
     }
 
+    // Helper function to update the dragon's position
+    Dragon.prototype.update = function()
+    {
+        // If we're doing percent based positioning
+        if(this.options.position == '%')
+        {
+            // This is probably inaccurate in a bunch of cases?
+            var parent = $(window).size();
+            var child = $(this.element).size();
+
+            // Because CSS translations in percent are based on the element's size...
+            // We have to multiply the distance we move by the ratio of the size of the parent to the child
+            var ratio =
+            {
+                x: parent.width.inner / child.width.outer,
+                y: parent.height.inner / child.height.outer
+            }
+
+            var percent =
+            {
+                x: (this.pos.x / parent.width.inner) * 100 * ratio.x,
+                y: (this.pos.y / parent.height.inner) * 100 * ratio.y
+            }
+
+            $(this.element).transform('translate', percent.x+'%', percent.y+'%');
+        }
+        // Otherwise, default to pixel based positioning
+        else
+        {
+            $(this.element).transform('translate', parseInt(this.pos.x)+'px', parseInt(this.pos.y)+'px');
+        }
+    }
+
     // Bind mouse events
     Dragon.prototype.bind = function()
     {
@@ -76,6 +109,7 @@
             // Save it
             drag.lastX = position.x;
             drag.lastY = position.y;
+
             
             $(drag.element).trigger('dragstart');
         });
@@ -119,35 +153,8 @@
                 {
                     drag.pos.y += delta.y;
                 }
-                
-                // If we're doing percent based positioning
-                if(drag.options.position == '%')
-                {
-                    // This is probably inaccurate in a bunch of cases?
-                    var parent = $(window).size();
-                    var child = $(drag.element).size();
 
-                    // Because CSS translations in percent are based on the element's size...
-                    // We have to multiply the distance we move by the ratio of the size of the parent to the child
-                    var ratio =
-                    {
-                        x: parent.width.inner / child.width.outer,
-                        y: parent.height.inner / child.height.outer
-                    }
-
-                    var percent =
-                    {
-                        x: (drag.pos.x / parent.width.inner) * 100 * ratio.x,
-                        y: (drag.pos.y / parent.height.inner) * 100 * ratio.y
-                    }
-
-                    $(drag.element).transform('translate', percent.x+'%', percent.y+'%');
-                }
-                // Otherwise, default to pixel based positioning
-                else
-                {
-                    $(drag.element).transform('translate', drag.pos.x+'px', drag.pos.y+'px');
-                }
+                drag.update();
 
                 // Save the current position
                 drag.lastX = position.x;
@@ -161,11 +168,12 @@
         {
             if(drag.active)
             {
+                // Find the current position
+                var position = drag.position(event);
+
                 // Touch events always return the original target, so we have to calculate where you moved to
                 if(event.type.indexOf('touch') > -1)
                 {
-                    // Find the current position
-                    var position = drag.position(event);
                     var target = document.elementFromPoint(position.x, position.y);
                 }
                 else
@@ -179,21 +187,17 @@
                     // And the target is somewhere new
                     if(drag.element.parentNode != target)
                     {
-                        var newSize = $(target).size();
-                        var oldSize = $(drag.element.parentNode).size();
-
-                        // If the new location is smaller than the previous
-                        if(newSize.width.inner <= oldSize.width.inner && newSize.height.inner <= oldSize.height.inner)
-                        {
-                            // Reset its position
-                            drag.pos.x = 0;
-                            drag.pos.y = 0;
-
-                            $(drag.element).transform('translate', drag.pos.x+'px', drag.pos.y+'px');
-                        }
-
                         // Move the dragon into the droppable target
                         target.appendChild(drag.element); 
+
+                        // Recenter based on the current pointer position
+                        var size = $(drag.element).size();
+
+                        drag.pos.x = position.x - size.width.outer / 2;
+                        drag.pos.y = position.y - size.height.outer / 2;
+
+                        drag.update();
+                        $(drag.element).trigger('drop');
                     }
                 }
 
@@ -205,6 +209,14 @@
                 // Re-enable pointer-events
                 $('.dragon').style({'pointer-events': 'auto'});
             }
+        });
+
+        // Event to allow 3rd party scripts to reset the dragon's position
+        $(drag.element).on('dragreset', function(event)
+        {
+            drag.pos.x = 0;
+            drag.pos.y = 0;
+            drag.update();
         });
     }
 
