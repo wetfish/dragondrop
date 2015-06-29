@@ -72,19 +72,19 @@
     <body>
         <div class="droppable background">
             <div class="container">
-                <div class="droppable slot">
+                <div class="slot">
                     <img class="example" src="dragons/trogdor.png">
                 </div>
 
-                <div class="droppable slot">
+                <div class="slot">
                     <img class="example" src="dragons/dragonite.png">
                 </div>
 
-                <div class="droppable slot">
+                <div class="slot">
                     <img class="example" src="dragons/spike.png">
                 </div>
 
-                <div class="droppable slot">
+                <div class="slot">
                     <img class="example" src="dragons/charmander.png">
                 </div>
             </div>
@@ -113,13 +113,27 @@
                 });
 
                 // Reposition dragon on drop
-                $('.example').on('drop', function()
+                $('.example').on('dragend', function(event)
                 {
                     // Make sure the dragon position is reset is centered when we drop it into a slot
                     if($(this.parentNode).hasClass('slot'))
                     {
                         $(this).trigger('dragreset');
                     }
+                });
+
+                // You can get where the dragon was dropped from as well as where it was dropped to by using event.detail!
+                $('.example').on('drop', function(event)
+                {
+                    $(event.detail.from).addClass('droppable');
+
+                    if($(event.detail.to).hasClass('slot'))
+                    {
+                        // Prevent dropping multiple dragons into a single box
+                        $(this.parentNode).removeClass('droppable');
+                    }
+                    
+                    console.log(event.detail);
                 });
             });
         </script>

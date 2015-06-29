@@ -110,8 +110,7 @@
             drag.lastX = position.x;
             drag.lastY = position.y;
 
-            
-            $(drag.element).trigger('dragstart');
+            $(drag.element).trigger('dragstart', {pos: drag.pos});
         });
 
         $('html').on('mousemove touchmove', function(event)
@@ -160,7 +159,7 @@
                 drag.lastX = position.x;
                 drag.lastY = position.y;
 
-                $(drag.element).trigger('dragmove');
+                $(drag.element).trigger('dragmove', {pos: drag.pos});
             }
         });
 
@@ -187,6 +186,8 @@
                     // And the target is somewhere new
                     if(drag.element.parentNode != target)
                     {
+                        var from = drag.element.parentNode;
+
                         // Move the dragon into the droppable target
                         target.appendChild(drag.element); 
 
@@ -197,14 +198,14 @@
                         drag.pos.y = position.y - size.height.outer / 2;
 
                         drag.update();
-                        $(drag.element).trigger('drop');
+                        $(drag.element).trigger('drop', {from: from, to: target, pos: drag.pos});
                     }
                 }
 
                 $(drag.element).removeClass('dragging');
                 drag.active = false;
 
-                $(drag.element).trigger('dragend');
+                $(drag.element).trigger('dragend', {pos: drag.pos});
 
                 // Re-enable pointer-events
                 $('.dragon').style({'pointer-events': 'auto'});
