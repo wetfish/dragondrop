@@ -6,6 +6,16 @@
         this.options = options;
         this.active = false;
 
+        // Allow dragging on a specific child selector
+        if(this.options.handle)
+        {
+            this.handle = $(this.element).find(this.options.handle).el[0];
+        }
+        else
+        {
+            this.handle = this.element;
+        }
+
         this.init();
         this.bind();
     }
@@ -61,8 +71,8 @@
         if(this.options.position == '%')
         {
             // This is probably inaccurate in a bunch of cases?
-            var parent = $(window).size();
-            var child = $(this.element).size();
+            var parent = $(window).size('both');
+            var child = $(this.element).size('both');
 
             // Because CSS translations in percent are based on the element's size...
             // We have to multiply the distance we move by the ratio of the size of the parent to the child
@@ -98,7 +108,16 @@
             // Ignore events on specific elements
             if(drag.options.ignore.indexOf(event.target.tagName.toLowerCase()) > -1)
                 return;
-                
+
+            // If a handle is being used, ignore all events except on that handle
+            if(drag.options.handle)
+            {
+                console.log(event.target, drag.handle);
+                if(event.target != drag.handle)
+                    return;
+            }
+
+            
             event.preventDefault();
 
             // Prevent dropping onto other dragons
@@ -196,10 +215,10 @@
                         target.appendChild(drag.element); 
 
                         // Recenter based on the current pointer position
-                        var size = $(drag.element).size();
+                        var size = $(drag.element).size('outer');
 
-                        drag.pos.x = position.x - size.width.outer / 2;
-                        drag.pos.y = position.y - size.height.outer / 2;
+                        drag.pos.x = position.x - size.width / 2;
+                        drag.pos.y = position.y - size.height / 2;
 
                         drag.update();
                         $(drag.element).trigger('drop', {from: from, to: target, pos: drag.pos});
@@ -228,14 +247,27 @@
     // Wetfish basic wrapper
     $.prototype.dragondrop = function(options)
     {
-        if(typeof options != "object")
+        // By default use these options
+        var defaults =
         {
-            // By default use these options
-            options =
+            // Ignore clicks on specific elements
+            ignore: ['input', 'textarea', 'button', 'select', 'option'],
+        };
+
+        if(typeof options == "object")
+        {
+            // Merge user options into defaults
+            for(var property in defaults)
             {
-                // Ignore clicks on specific elements
-                ignore: ['input', 'textarea', 'button', 'select', 'option'],
-            };
+                if(options[property] === undefined)
+                {
+                    options[property] = defaults[property];
+                }
+            }
+        }
+        else
+        {
+            options = defaults;
         }
         
         this.forEach(this.elements, function(index, element)

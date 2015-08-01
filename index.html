@@ -67,6 +67,18 @@
             .credits a {
                 color: #555;
             }
+
+            .window {
+                position: absolute;
+                width: 100px;
+                right: 0;
+                top: 0;
+                font-size: 50%;
+            }
+
+            .window .title {
+                background-color: #ccc;
+            }
         </style>
     </head>
     <body>
@@ -89,6 +101,11 @@
                 </div>
             </div>
 
+            <div class="window">
+                <div class="title">Hello World</div>
+                <div class="content">This is not a dragon!</div>
+            </div>
+
             <div class="credits">
                 DragonDrop is a <a href="LICENSE.txt">MIT licensed</a> library © Wetfish 2015 - All example characters owned by their respective <a href="dragons/COPYRIGHT.txt">copyright holders</a>.
             </div>
@@ -101,6 +118,7 @@
             $(document).ready(function(event)
             {
                 $('.example').dragondrop();
+                $('.window').dragondrop({handle: '.title'});
 
                 // Change z-index when dropping
                 $('.example').on('dragend', function()
