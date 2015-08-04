@@ -124,8 +124,15 @@
             event.preventDefault();
 
             // Prevent dropping onto other dragons
-            $('.dragon').style({'pointer-events': 'none'});
-
+            if(drag.options.position == 'absolute')
+            {
+                $('.dragon').style({'pointer-events': 'none'});
+            }
+            else
+            {
+                $(drag.element).style({'pointer-events': 'none'});
+            }
+            
             $(drag.element).addClass('dragging');
             drag.active = true;
 
@@ -229,8 +236,7 @@
                 // If we dropped into a droppable element
                 if($(target).hasClass('droppable') && groupMatched)
                 {
-                    // If the droppable target belongs to a specific group
-                    // And the target is somewhere new
+                    // If the target is somewhere new
                     if(drag.element.parentNode != target)
                     {
                         var from = drag.element.parentNode;
@@ -247,6 +253,52 @@
                         drag.update();
                         $(drag.element).trigger('drop', {from: from, to: target, pos: drag.pos});
                     }
+                }
+
+                // Or if we're using static positioning
+                else if(drag.options.position == 'static')
+                {
+                    var parent = drag.element.parentNode
+
+                    if(groupMatched)
+                    {
+                        // If we're dropping on an element after this one
+                        if($(event.target).index() > $(drag.element).index())
+                        {
+                            parent.insertBefore(drag.element, event.target.nextSibling);
+                        }
+                        // If we're dropping on an element before this one
+                        else
+                        {
+                            parent.insertBefore(drag.element, event.target);
+                        }
+                    }
+                    else
+                    {
+                        var container = $(parent).position();
+                        var height = $(drag.element).height('outer');
+
+                        // Did we move above the container?
+                        if(position.y + height < container.top)
+                        {
+                            // Move the element to the beginning of the container
+                            parent.insertBefore(drag.element, parent.firstChild);
+                        }
+
+                        // Did we move below the container?
+                        else if(position.y - height > container.bottom)
+                        {
+                            parent.appendChild(drag.element);
+                        }
+                    }
+                }
+
+                // Always reset the element position if we're using static positioning
+                if(drag.options.position == 'static')
+                {
+                    $(drag.element).attr('style', '');
+                    drag.pos.x = 0;
+                    drag.pos.y = 0;
                 }
 
                 $(drag.element).removeClass('dragging');
