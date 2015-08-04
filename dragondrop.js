@@ -68,7 +68,7 @@
     Dragon.prototype.update = function()
     {
         // If we're doing percent based positioning
-        if(this.options.position == '%')
+        if(this.options.units == '%')
         {
             // This is probably inaccurate in a bunch of cases?
             var parent = $(window).size('both');
@@ -90,10 +90,10 @@
 
             $(this.element).transform('translate', percent.x+'%', percent.y+'%');
         }
-        // Otherwise, default to pixel based positioning
+        // Otherwise, default to unit based positioning
         else
         {
-            $(this.element).transform('translate', parseInt(this.pos.x)+'px', parseInt(this.pos.y)+'px');
+            $(this.element).transform('translate', parseInt(this.pos.x)+this.options.units, parseInt(this.pos.y)+this.options.units);
         }
     }
 
@@ -112,7 +112,6 @@
             // If a handle is being used, ignore all events except on that handle
             if(drag.options.handle)
             {
-                console.log(event.target, drag.handle);
                 if(event.target != drag.handle)
                     return;
             }
@@ -252,6 +251,7 @@
         {
             // Ignore clicks on specific elements
             ignore: ['input', 'textarea', 'button', 'select', 'option'],
+            units: 'px'
         };
 
         if(typeof options == "object")

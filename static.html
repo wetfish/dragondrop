@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>DragonDrop - Here be dragons!</title>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            .dragging {
+                z-index: 3 !important;
+                border: 1px solid yellow;
+                pointer-events: none;
+            }
+
+            .credits {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                font-size: 75%;
+                color: #999;
+            }
+
+            .credits a {
+                color: #555;
+            }
+
+            .window {
+                position: absolute;
+                width: 150px;
+                right: 0;
+                top: 0;
+                font-size: 75%;
+            }
+
+            .window .title {
+                background-color: #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="droppable">
+            <div class="static"></div>
+        </div>
+
+        <div class="window">
+            <div class="title">Hello World</div>
+            <div class="content">This is not a dragon!</div>
+        </div>
+
+        <div class="credits">
+            DragonDrop is a <a href="LICENSE.txt">MIT licensed</a> library © Wetfish 2015.
+        </div>
+        
+        <script src="node_modules/wetfish-basic/dist/basic.js"></script>
+        <script src="dragondrop.js"></script>
+
+        <script>
+            $(document).ready(function(event)
+            {
+                $('.window').dragondrop({handle: '.title', units: 'pt'});
+            });
+        </script>
+    </body>
+</html>
