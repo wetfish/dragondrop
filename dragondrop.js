@@ -205,10 +205,31 @@
                 {
                     var target = event.target;
                 }
-                
-                // If we dropped into a droppable element
-                if($(target).hasClass('droppable'))
+
+                // Check if the target or current element belong to a specific group
+                var groupMatched;
+
+                if($(target).data('group') || $(drag.element).data('group'))
                 {
+                    if($(target).data('group') == $(drag.element).data('group'))
+                    {
+                        groupMatched = true;
+                    }
+                    else
+                    {
+                        groupMatched = false;
+                    }
+                }
+                // If neither the target nor the current element belongs to a group, set groupMatched to true
+                else
+                {
+                    groupMatched = true;
+                }
+
+                // If we dropped into a droppable element
+                if($(target).hasClass('droppable') && groupMatched)
+                {
+                    // If the droppable target belongs to a specific group
                     // And the target is somewhere new
                     if(drag.element.parentNode != target)
                     {

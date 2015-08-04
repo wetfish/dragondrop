@@ -27,27 +27,37 @@
                 color: #555;
             }
 
-            .window {
-                position: absolute;
-                width: 150px;
-                right: 0;
-                top: 0;
-                font-size: 75%;
+            .boxes {
+                width: 300px;
             }
 
-            .window .title {
-                background-color: #ccc;
+            .box {
+                display: inline-block;
+                padding: 1em;
+                border: 1px solid #ccc;
             }
         </style>
     </head>
     <body>
-        <div class="droppable">
-            <div class="static"></div>
+        <div class="droppable" data-group="static">
+            <div class="static" data-group="static">Element 1</div>
+            <div class="static" data-group="static">Element 2</div>
+            <div class="static" data-group="static">Element 3</div>
+            <div class="static" data-group="static">Element 4</div>
         </div>
 
-        <div class="window">
-            <div class="title">Hello World</div>
-            <div class="content">This is not a dragon!</div>
+        <hr>
+
+        <div class="droppable boxes" data-group="box">
+            <div class="box" data-group="box">Box 1</div>
+            <div class="box" data-group="box">Box 2</div>
+            <div class="box" data-group="box">Box 3</div>
+            <div class="box" data-group="box">Box 4</div>
+            <div class="box" data-group="box">Box 5</div>
+            <div class="box" data-group="box">Box 6</div>
+            <div class="box" data-group="box">Box 7</div>
+            <div class="box" data-group="box">Box 8</div>
+            <div class="box" data-group="box">Box 9</div>
         </div>
 
         <div class="credits">
@@ -60,7 +70,8 @@
         <script>
             $(document).ready(function(event)
             {
-                $('.window').dragondrop({handle: '.title', units: 'pt'});
+                $('.static').dragondrop({position: 'static'});
+                $('.box').dragondrop({position: 'static'});
             });
         </script>
     </body>
