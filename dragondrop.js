@@ -24,20 +24,25 @@
     Dragon.prototype.init = function()
     {
         $(this.element).addClass('dragon');
-        $(this.element).style({position: 'absolute'});
 
-        // Save the current element position
-        this.pos =
+        // Create position object
+        this.pos = {x: 0, y: 0};
+
+        // If we're using absolute positioning
+        if(this.options.position == 'absolute')
         {
-            x: this.element.offsetLeft,
-            y: this.element.offsetTop
-        };
+            // Save the current element position
+            this.pos.x = this.element.offsetLeft;
+            this.pos.y = this.element.offsetTop;
 
-        // Remove the element's original position
-        $(this.element).style({top: 0, left: 0});
+            $(this.element).style({position: 'absolute'});
 
-        // Update the element's position
-        this.update();
+            // Remove the element's original position
+            $(this.element).style({top: 0, left: 0});
+        
+            // Update the element's position
+            this.update();
+        }
     }
 
     // Helper function to get event position
@@ -116,7 +121,6 @@
                     return;
             }
 
-            
             event.preventDefault();
 
             // Prevent dropping onto other dragons
@@ -251,7 +255,8 @@
         {
             // Ignore clicks on specific elements
             ignore: ['input', 'textarea', 'button', 'select', 'option'],
-            units: 'px'
+            position: 'absolute',
+            units: 'px',
         };
 
         if(typeof options == "object")
