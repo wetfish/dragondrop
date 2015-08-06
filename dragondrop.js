@@ -192,7 +192,7 @@
                 drag.lastX = position.x;
                 drag.lastY = position.y;
 
-                $(drag.element).trigger('dragmove', {pos: drag.pos});
+                $(drag.element).trigger('dragmove', {pos: drag.pos, delta: delta});
             }
         });
 
