@@ -214,27 +214,23 @@
                 }
 
                 // Check if the target or current element belong to a specific group
-                var groupMatched;
+                var group = false;
 
                 if($(target).data('group') || $(drag.element).data('group'))
                 {
                     if($(target).data('group') == $(drag.element).data('group'))
                     {
-                        groupMatched = true;
-                    }
-                    else
-                    {
-                        groupMatched = false;
+                        group = 'match';
                     }
                 }
-                // If neither the target nor the current element belongs to a group, set groupMatched to true
+                // If neither the target nor the current element belongs to a group
                 else
                 {
-                    groupMatched = true;
+                    group = 'neither';
                 }
 
                 // If we dropped into a droppable element
-                if($(target).hasClass('droppable') && groupMatched)
+                if($(target).hasClass('droppable') && group)
                 {
                     // If the target is somewhere new
                     if(drag.element.parentNode != target)
@@ -260,7 +256,7 @@
                 {
                     var parent = drag.element.parentNode
 
-                    if(groupMatched)
+                    if(group == 'match')
                     {
                         // If we're dropping on an element after this one
                         if($(event.target).index() > $(drag.element).index())
@@ -273,7 +269,7 @@
                             parent.insertBefore(drag.element, event.target);
                         }
                     }
-                    else
+                    else if(!group)
                     {
                         var container = $(parent).position();
                         var height = $(drag.element).height('outer');
