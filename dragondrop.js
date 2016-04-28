@@ -344,7 +344,7 @@
             options = defaults;
         }
         
-        this.forEach(this.elements, function(index, element)
+        this.forEach(this.elements, function(element)
         {
             new Dragon(element, options);
         });
