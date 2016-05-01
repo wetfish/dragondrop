@@ -129,6 +129,14 @@
 
         $(drag.element).on('mousedown touchstart', function(event)
         {
+            // If event.buttons is defined (user has a mouse)
+            // And they're not right clicking
+            if(event.buttons && event.buttons != 1)
+            {
+                // Don't do anything
+                return;
+            }
+
             // Ignore events on specific elements
             if(drag.options.ignore.indexOf(event.target.tagName.toLowerCase()) > -1)
                 return;
