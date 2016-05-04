@@ -137,15 +137,25 @@
                 return;
             }
 
+            // If the dragon is currently disabled
+            if($(this).hasClass('disabled'))
+            {
+                return;
+            }
+
             // Ignore events on specific elements
             if(drag.options.ignore.indexOf(event.target.tagName.toLowerCase()) > -1)
+            {
                 return;
+            }
 
             // If a handle is being used, ignore all events except on that handle
             if(drag.options.handle)
             {
                 if(event.target != drag.handle)
+                {
                     return;
+                }
             }
 
             event.preventDefault();
