@@ -51,8 +51,9 @@
         if(this.options.position == 'absolute')
         {
             // Save the current element position
-            this.pos.x = this.element.offsetLeft;
-            this.pos.y = this.element.offsetTop;
+            // Check if the element has been transformed, if not, get the element's position relative to the page
+            this.pos.x = (this.element.transform.translate) ? parseInt(this.element.transform.translate[0]) : this.element.offsetLeft;
+            this.pos.y = (this.element.transform.translate) ? parseInt(this.element.transform.translate[1]) : this.element.offsetTop;
 
             $(this.element).style({position: 'absolute'});
 
@@ -169,7 +170,7 @@
             {
                 $(drag.element).style({'pointer-events': 'none'});
             }
-            
+
             $(drag.element).addClass('dragging');
             drag.active = true;
 
@@ -380,7 +381,7 @@
         {
             options = defaults;
         }
-        
+
         this.forEach(this.elements, function(element)
         {
             new Dragon(element, options);
