@@ -254,6 +254,15 @@
                     var target = event.target;
                 }
 
+                // If the event target isn't a dragon, are any of its parents?
+                if(!$(target).hasClass('dragon'))
+                {
+                    if($(target).parents('.dragon').el.length)
+                    {
+                        target = $(target).parents('.dragon').el[0];
+                    }
+                }
+
                 // Check if the target or current element belong to a specific group
                 var group = false;
 
@@ -302,12 +311,12 @@
                         // If we're dropping on an element after this one
                         if($(event.target).index() > $(drag.element).index())
                         {
-                            parent.insertBefore(drag.element, event.target.nextSibling);
+                            parent.insertBefore(drag.element, target.nextSibling);
                         }
                         // If we're dropping on an element before this one
                         else
                         {
-                            parent.insertBefore(drag.element, event.target);
+                            parent.insertBefore(drag.element, target);
                         }
                     }
                     else if(!group)
