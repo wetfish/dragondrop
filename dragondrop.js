@@ -244,6 +244,9 @@
                 // Find the current position
                 var position = drag.position(event);
 
+                // Object passed to dragend event handlers
+                var eventData = {};
+
                 // Touch events always return the original target, so we have to calculate where you moved to
                 if(event.type.indexOf('touch') > -1)
                 {
@@ -304,12 +307,15 @@
                 // Or if we're using static positioning
                 else if(drag.options.position == 'static')
                 {
+                    // Save the original element index so event handlers can use it
+                    eventData.old = $(target).index();
+
                     var parent = drag.element.parentNode
 
                     if(group == 'match')
                     {
                         // If we're dropping on an element after this one
-                        if($(event.target).index() > $(drag.element).index())
+                        if($(target).index() > $(drag.element).index())
                         {
                             parent.insertBefore(drag.element, target.nextSibling);
                         }
@@ -339,18 +345,26 @@
                     }
                 }
 
-                // Always reset the element position if we're using static positioning
                 if(drag.options.position == 'static')
                 {
+                    // Save the new element index
+                    eventData.new = $(target).index();
+
+                    // Reset element position
                     $(drag.element).attr('style', '');
                     drag.pos.x = 0;
                     drag.pos.y = 0;
+                }
+                else
+                {
+                    // Return the final position the element was dragged to
+                    eventData.pos = drag.pos;
                 }
 
                 $(drag.element).removeClass('dragging');
                 drag.active = false;
 
-                $(drag.element).trigger('dragend', {pos: drag.pos});
+                $(drag.element).trigger('dragend', eventData);
 
                 // Re-enable pointer-events
                 $('.dragon').style({'pointer-events': 'auto'});
