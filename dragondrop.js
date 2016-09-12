@@ -150,12 +150,15 @@
                 return;
             }
 
-            // If a handle is being used, ignore all events except on that handle
+            // If a handle is being used, ignore all events except on that handle and its parents
             if(drag.options.handle)
             {
                 if(event.target != drag.handle)
                 {
-                    return;
+                    if(!$(event.target).parents(drag.handle).el.length)
+                    {
+                        return;
+                    }
                 }
             }
 
